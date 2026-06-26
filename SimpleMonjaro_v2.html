@@ -1,0 +1,348 @@
+
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&family=Inter:wght@300;400;500;600&display=swap');
+
+*{box-sizing:border-box;margin:0;padding:0}
+
+body-ish,.sm{font-family:'Inter',sans-serif}
+
+.sm{
+  background:#8b0000;
+  min-height:100vh;
+  padding:2rem 1.2rem 3rem;
+  position:relative;
+  overflow:hidden;
+}
+
+.sm::before{
+  content:'';position:absolute;top:-80px;right:-80px;
+  width:260px;height:260px;border-radius:50%;
+  background:rgba(255,255,255,0.06);pointer-events:none;
+}
+.sm::after{
+  content:'';position:absolute;bottom:-60px;left:-60px;
+  width:200px;height:200px;border-radius:50%;
+  background:rgba(0,0,0,0.15);pointer-events:none;
+}
+
+.logo{
+  font-family:'Dancing Script',cursive;
+  font-size:2.8rem;font-weight:700;
+  color:#fff;text-align:center;
+  line-height:1;margin-bottom:4px;
+}
+.tagline{
+  text-align:center;font-size:11px;
+  color:rgba(255,255,255,0.45);
+  letter-spacing:2px;text-transform:uppercase;
+  margin-bottom:2rem;
+}
+.divider{
+  width:40px;height:2px;
+  background:rgba(255,255,255,0.25);
+  margin:0 auto 2rem;border-radius:2px;
+}
+
+.card{
+  background:rgba(0,0,0,0.2);
+  border:1px solid rgba(255,255,255,0.12);
+  border-radius:16px;
+  padding:1.4rem 1.2rem;
+  margin-bottom:1rem;
+  position:relative;z-index:1;
+}
+
+.card-title{
+  font-size:10px;letter-spacing:2px;
+  text-transform:uppercase;
+  color:rgba(255,255,255,0.4);
+  margin-bottom:1rem;font-weight:500;
+}
+
+.row{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.row3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+
+.field{display:flex;flex-direction:column;gap:5px}
+.lbl{
+  font-size:11px;letter-spacing:1px;
+  text-transform:uppercase;
+  color:rgba(255,255,255,0.5);font-weight:500;
+}
+
+.inp-wrap{position:relative}
+.inp{
+  width:100%;
+  background:rgba(255,255,255,0.1);
+  border:1px solid rgba(255,255,255,0.18);
+  border-radius:10px;
+  padding:10px 36px 10px 12px;
+  font-size:15px;color:#fff;
+  font-family:'Inter',sans-serif;
+  outline:none;
+  transition:border-color .2s,background .2s;
+  -moz-appearance:textfield;
+}
+.inp::-webkit-outer-spin-button,.inp::-webkit-inner-spin-button{-webkit-appearance:none}
+.inp::placeholder{color:rgba(255,255,255,0.25)}
+.inp:focus{border-color:rgba(255,255,255,0.45);background:rgba(255,255,255,0.15)}
+.unit{
+  position:absolute;right:10px;top:50%;
+  transform:translateY(-50%);
+  font-size:11px;color:rgba(255,255,255,0.4);
+  pointer-events:none;
+}
+
+.sel{
+  width:100%;
+  background:rgba(255,255,255,0.1);
+  border:1px solid rgba(255,255,255,0.18);
+  border-radius:10px;
+  padding:10px 12px;
+  font-size:14px;color:#fff;
+  font-family:'Inter',sans-serif;
+  outline:none;appearance:none;cursor:pointer;
+}
+.sel option{background:#6b0000;color:#fff}
+
+.btn{
+  width:100%;
+  background:#fff;
+  color:#7a0000;
+  border:none;border-radius:12px;
+  padding:14px;font-size:15px;
+  font-weight:600;font-family:'Inter',sans-serif;
+  cursor:pointer;letter-spacing:0.3px;
+  position:relative;z-index:1;
+  transition:background .2s,transform .1s;
+  margin-top:0.5rem;
+}
+.btn:hover{background:rgba(255,255,255,0.95)}
+.btn:active{transform:scale(0.98)}
+
+.result{display:none;position:relative;z-index:1}
+.result.show{display:block}
+
+.big-num{
+  font-family:'Dancing Script',cursive;
+  font-size:5rem;font-weight:700;
+  color:#fff;text-align:center;
+  line-height:1;margin-bottom:2px;
+}
+.big-lbl{
+  text-align:center;font-size:13px;
+  color:rgba(255,255,255,0.55);
+  margin-bottom:1.4rem;
+}
+
+.stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:1rem}
+.stat{
+  background:rgba(0,0,0,0.2);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:12px;padding:12px 8px;text-align:center;
+}
+.stat-n{font-size:18px;font-weight:600;color:#fff;display:block;margin-bottom:2px}
+.stat-l{font-size:10px;color:rgba(255,255,255,0.45);letter-spacing:1px;text-transform:uppercase}
+
+.imc-bar-wrap{margin-bottom:1rem}
+.imc-label{font-size:11px;color:rgba(255,255,255,0.45);letter-spacing:1px;text-transform:uppercase;margin-bottom:6px}
+.imc-bar{
+  width:100%;height:8px;border-radius:4px;
+  background:linear-gradient(to right,#4fc3f7 0%,#81c784 25%,#ffb74d 60%,#e57373 100%);
+  position:relative;margin-bottom:4px;
+}
+.imc-marker{
+  position:absolute;top:-3px;
+  width:14px;height:14px;border-radius:50%;
+  background:#fff;border:2px solid rgba(255,255,255,0.8);
+  transform:translateX(-50%);
+  transition:left .6s ease;
+}
+.imc-cats{display:flex;justify-content:space-between;font-size:9px;color:rgba(255,255,255,0.35);letter-spacing:0.5px}
+
+.tip{
+  background:rgba(255,255,255,0.06);
+  border-left:3px solid rgba(255,255,255,0.3);
+  border-radius:0 10px 10px 0;
+  padding:10px 12px;
+  font-size:12px;color:rgba(255,255,255,0.6);
+  line-height:1.6;font-style:italic;
+  margin-bottom:0;
+}
+
+.err{
+  background:rgba(0,0,0,0.25);border-radius:10px;
+  padding:10px 14px;font-size:13px;
+  color:rgba(255,180,180,0.9);text-align:center;
+  margin-top:12px;display:none;
+}
+.err.show{display:block}
+</style>
+
+<div class="sm">
+  <div class="logo">SimpleMonjaro</div>
+  <div class="tagline">calculadora de canetas diárias</div>
+  <div class="divider"></div>
+
+  <div class="card">
+    <div class="card-title">Dados pessoais</div>
+    <div class="row" style="margin-bottom:12px">
+      <div class="field">
+        <span class="lbl">Peso</span>
+        <div class="inp-wrap">
+          <input class="inp" type="number" id="peso" placeholder="70" min="30" max="300">
+          <span class="unit">kg</span>
+        </div>
+      </div>
+      <div class="field">
+        <span class="lbl">Altura</span>
+        <div class="inp-wrap">
+          <input class="inp" type="number" id="altura" placeholder="170" min="100" max="250">
+          <span class="unit">cm</span>
+        </div>
+      </div>
+    </div>
+    <div class="row">
+      <div class="field">
+        <span class="lbl">Idade</span>
+        <div class="inp-wrap">
+          <input class="inp" type="number" id="idade" placeholder="30" min="5" max="110">
+          <span class="unit">anos</span>
+        </div>
+      </div>
+      <div class="field">
+        <span class="lbl">Sexo</span>
+        <select class="sel" id="sexo">
+          <option value="m">Masculino</option>
+          <option value="f">Feminino</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="card-title">Estilo de uso</div>
+    <div class="field" style="margin-bottom:12px">
+      <span class="lbl">Nível de atividade</span>
+      <select class="sel" id="atividade">
+        <option value="1">Sedentário</option>
+        <option value="2">Levemente ativo</option>
+        <option value="3" selected>Moderadamente ativo</option>
+        <option value="4">Muito ativo</option>
+      </select>
+    </div>
+    <div class="field">
+      <span class="lbl">Tipo de caneta preferida</span>
+      <select class="sel" id="tipo">
+        <option value="esferografica">Esferográfica (padrão)</option>
+        <option value="gel">Caneta gel</option>
+        <option value="tinteiro">Caneta tinteiro</option>
+        <option value="marcador">Marcador / hidrográfica</option>
+        <option value="pilot">Caneta pilot 0.5</option>
+      </select>
+    </div>
+  </div>
+
+  <button class="btn" onclick="calcular()">✦ Calcular minha dose</button>
+  <div class="err" id="err">Preencha peso, altura e idade para continuar.</div>
+
+  <div class="result" id="result" style="margin-top:1.5rem">
+    <div class="card">
+      <div class="big-num" id="bigNum">—</div>
+      <div class="big-lbl" id="bigLbl">canetas por dia</div>
+
+      <div class="stats">
+        <div class="stat">
+          <span class="stat-n" id="sWeek">—</span>
+          <span class="stat-l">por semana</span>
+        </div>
+        <div class="stat">
+          <span class="stat-n" id="sMes">—</span>
+          <span class="stat-l">por mês</span>
+        </div>
+        <div class="stat">
+          <span class="stat-n" id="sAno">—</span>
+          <span class="stat-l">por ano</span>
+        </div>
+      </div>
+
+      <div class="imc-bar-wrap">
+        <div class="imc-label">IMC — <span id="imcVal">—</span></div>
+        <div class="imc-bar">
+          <div class="imc-marker" id="imcDot" style="left:0%"></div>
+        </div>
+        <div class="imc-cats">
+          <span>Abaixo</span><span>Normal</span><span>Sobrepeso</span><span>Obesidade</span>
+        </div>
+      </div>
+
+      <div class="tip" id="tipText"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+const tips = {
+  esferografica:"A esferográfica é a mais resistente para uso intenso — ótima escolha para o seu perfil.",
+  gel:"A gel escorrega suave, mas seca rápido com pressão alta. Equilibre o traço.",
+  tinteiro:"Com tinteiro, inclua cartuchos reserva. A autonomia varia muito com a pressão da escrita.",
+  marcador:"Marcadores secam depressa se destampados. Atenção ao hábito de deixá-los abertos.",
+  pilot:"A pilot 0.5 é econômica em tinta — ideal para quem escreve muito e quer durabilidade."
+};
+
+function imcPct(bmi){
+  if(bmi<=16) return 2;
+  if(bmi<=18.5) return Math.round(2+(bmi-16)/(18.5-16)*20);
+  if(bmi<=25)   return Math.round(22+(bmi-18.5)/(25-18.5)*28);
+  if(bmi<=30)   return Math.round(50+(bmi-25)/5*25);
+  return Math.min(98, Math.round(75+(bmi-30)/10*23));
+}
+
+function calcular(){
+  const peso=parseFloat(document.getElementById('peso').value);
+  const altura=parseFloat(document.getElementById('altura').value);
+  const idade=parseFloat(document.getElementById('idade').value);
+  const sexo=document.getElementById('sexo').value;
+  const atv=parseInt(document.getElementById('atividade').value);
+  const tipo=document.getElementById('tipo').value;
+  const errEl=document.getElementById('err');
+  const resEl=document.getElementById('result');
+
+  if(!peso||!altura||!idade||peso<30||altura<100||idade<5){
+    errEl.classList.add('show');
+    resEl.classList.remove('show');
+    return;
+  }
+  errEl.classList.remove('show');
+
+  const altM=altura/100;
+  const bmi=peso/(altM*altM);
+
+  let base=1.0;
+  if(sexo==='m') base+=0.35;
+  base+=(atv-1)*0.45;
+  if(bmi>30) base+=0.5;
+  else if(bmi>25) base+=0.3;
+  else if(bmi<18.5) base-=0.2;
+  if(idade<18) base*=0.7;
+  else if(idade>60) base*=0.85;
+
+  const mult={esferografica:1.0,gel:0.8,tinteiro:0.6,marcador:1.4,pilot:0.9};
+  const dia=Math.max(0.5, base*mult[tipo]);
+  const diaR=Math.round(dia*10)/10;
+  const semR=Math.round(diaR*7*10)/10;
+  const mesR=Math.round(diaR*30);
+  const anoR=Math.round(diaR*365);
+  const bmiR=(Math.round(bmi*10)/10).toFixed(1);
+
+  document.getElementById('bigNum').textContent=diaR.toFixed(1);
+  document.getElementById('bigLbl').textContent=diaR===1?'caneta por dia':'canetas por dia';
+  document.getElementById('sWeek').textContent=semR.toFixed(1);
+  document.getElementById('sMes').textContent=mesR;
+  document.getElementById('sAno').textContent=anoR;
+  document.getElementById('imcVal').textContent=bmiR;
+  document.getElementById('imcDot').style.left=imcPct(bmi)+'%';
+  document.getElementById('tipText').textContent=tips[tipo];
+
+  resEl.classList.add('show');
+}
+</script>
